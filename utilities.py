@@ -8,9 +8,8 @@ import warnings
 warnings.filterwarnings("ignore")
 from IPython.display import set_matplotlib_formats
 
-print("utilities loaded")
 
-
+# Bar plot function
 def bar_plot(x, x_label = None, y_label = None, title = None, color = None):
     obj = (x.value_counts(normalize=True)*100).plot(kind = 'bar', color = color)
     obj.set_ylabel(y_label)
@@ -22,5 +21,12 @@ def bar_plot(x, x_label = None, y_label = None, title = None, color = None):
         obj.text(i.get_x()+.10, i.get_height()-4.0,\
             f'{round((i.get_height()), 2)}%',
             fontsize=10,
-            color='black',
-            weight = 'bold') 
+            color='white',
+            weight = 'bold')
+
+# T-test function
+def t_test(df, numeric_column, binary_column, level):
+    pass
+
+
+print("utilities loaded")
