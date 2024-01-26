@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 import warnings
 warnings.filterwarnings("ignore")
 from IPython.display import set_matplotlib_formats
+from scipy.stats import ttest_ind
 
 
 # Bar plot function
@@ -24,9 +25,20 @@ def bar_plot(x, x_label = None, y_label = None, title = None, color = None):
             color='white',
             weight = 'bold')
 
-# T-test function
-def t_test(df, numeric_column, binary_column, level):
-    pass
+# Student test function
+def student_test(df, numeric_col, group_by, alpha_level):
+    for key in numeric_col:
+        group = df[group_by].unique()
+        group_1 = df[df[group_by] == group[0]][key]
+        group_2 = df[df[group_by] == group[1]][key]
+        t_statistic, p_value = ttest_ind(group_1, group_2)
+        if p_value < alpha_level:
+            print("[{}, {}] : Reject the null hypothesis with level {}; there is a significant difference between groups.".
+                  format(key, group_by, alpha_level))
+        else:
+            print('[{}, {}] : Fail to reject the null hypothesis with level {}; there is no significant difference between groups.'.
+                  format(key, group_by, alpha_level))  
+        print('===')
 
 
 print("utilities loaded")
