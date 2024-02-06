@@ -8,6 +8,7 @@ import warnings
 warnings.filterwarnings("ignore")
 from IPython.display import set_matplotlib_formats
 from scipy.stats import ttest_ind
+import scipy.stats as ss
 
 
 # Bar plot function
@@ -39,6 +40,24 @@ def student_test(df, numeric_col, group_by, alpha_level):
             print('[{}, {}] : Fail to reject the null hypothesis with level {}; there is no significant difference between groups.'.
                   format(key, group_by, alpha_level))  
         print('===')
+
+
+# Cramer V function
+def CramerV(confusion_matrix, bias = False):
+    chi = ss.chi2_contingency(confusion_matrix)[0]
+    r, k = confusion_matrix.shape
+    n = confusion_matrix.sum()
+
+    if bias:
+        chi = max(0, chi-((k-1)*(r-1))/(n-1))
+        k = k-((k-1)**2)/(n-1)
+        r = r-((r-1)**2)/(n-1)
+        v = np.sqrt(chi/n*min(r-1, k-1)) 
+
+    else:
+        v = np.sqrt((chi/n)/min(r-1, k-1)) 
+    
+    return round(v, 2)
 
 
 print("utilities loaded")
